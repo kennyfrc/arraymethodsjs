@@ -3,3 +3,8 @@
 
 // prints "hi" in the browser's dev tools console
 console.log('hi');
+
+function add(a, b) {
+  return a + b;
+}
+

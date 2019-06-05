@@ -1,16 +1,38 @@
 <script src="simpletest.js"></script>
-<script src="adder.js"></script>
+<script src="script.js"></script>
 <script>
- tests({
+  
+function forEach(arr, callback) {
+  let modified_arr = [];
 
-   'adds numbers': function() {
-     eq(6, add(2, 4));
-     eq(6.4, add(2.4, 4));
-   },
+  for (let i = 0; i < arr.length; i++) {
+    modified_arr[i] = callback(arr[i],i, arr);
+  };
+};
 
-   'subtracts numbers': function() {
-     eq(-2, add(2, -4)); 
-   },
-
- });
+tests({
+ 'It should run the callback function array.length times': function() {
+   var counter = 0;
+   forEach([1,2,3], function() {
+     counter++;
+   });
+   eq(3, counter)
+ },
+ 'It should pass in the ith element as the first argument to the callback': function() {
+   forEach([1], function(number) {
+     eq(1, number)
+   });
+ },
+ 'It should pass in the ith index as the second argument to the callback': function() {
+    forEach([1], function(number, index) {
+      eq(0, index)
+    });
+ },
+ 'It should pass the array as the third argument to the callback': function() {
+   let arrayArgTest = [1,2,3];
+   forEach(arrayArgTest, function(number, index, arr) {
+      eq(arrayArgTest, arr);
+   });
+ }
+});
 </script>
