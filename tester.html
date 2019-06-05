@@ -2,14 +2,6 @@
 <script src="script.js"></script>
 <script>
   
-function forEach(arr, callback) {
-  let modified_arr = [];
-
-  for (let i = 0; i < arr.length; i++) {
-    modified_arr[i] = callback(arr[i],i, arr);
-  };
-};
-
 tests({
  'It should run the callback function array.length times': function() {
    var counter = 0;
@@ -33,6 +25,12 @@ tests({
    forEach(arrayArgTest, function(number, index, arr) {
       eq(arrayArgTest, arr);
    });
+ },
+ 'There should be a third argument which is the this object': function() {
+   forEach([1], function() {
+     eq('I should be accessible outside of the callback', this.description)
+   }, {description: 'I should be accessible outside of the callback'
+  });
  }
 });
 </script>
