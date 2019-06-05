@@ -1,36 +1,99 @@
 <script src="simpletest.js"></script>
-<script src="script.js"></script>
+<script src="arraymethods.js"></script>
 <script>
   
+function forEach(arr, callback, thisObject) {
+  let fcnCallback = callback
+  let modified_arr = [];
+
+  if (thisObject) {
+    fcnCallback = callback.bind(thisObject)
+  }
+
+  for (let i = 0; i < arr.length; i++) {
+    modified_arr[i] = fcnCallback(arr[i],i, arr);
+  };
+};
+  
+function filter(arr, callback, thisObject) {
+  let fcnCallback = callback
+  let modified_arr = [];
+  
+  if (thisObject) {
+    fcnCallback = callback.bind(thisObject)
+  }
+  
+  for (let i = 0; i < arr.length; i++) {
+    if (fcnCallback(arr[i],i, arr) === true) {
+      modified_arr.push(arr[i]);
+    }
+  };
+  
+  return modified_arr
+}
+  
 tests({
- 'It should run the callback function array.length times': function() {
-   var counter = 0;
-   forEach([1,2,3], function() {
-     counter++;
-   });
-   eq(3, counter)
- },
- 'It should pass in the ith element as the first argument to the callback': function() {
-   forEach([1], function(number) {
-     eq(1, number)
-   });
- },
- 'It should pass in the ith index as the second argument to the callback': function() {
+  'forEach: It should run the callback function array.length times': function() {
+     var counter = 0;
+     forEach([1,2,3], function() {
+       counter++;
+     });
+     eq(3, counter)
+  },
+  'forEach: It should pass in the ith element as the first argument to the callback': function() {
+     forEach([1], function(number) {
+       eq(1, number)
+     });
+  },
+  'forEach: It should pass in the ith index as the second argument to the callback': function() {
     forEach([1], function(number, index) {
       eq(0, index)
     });
- },
- 'It should pass the array as the third argument to the callback': function() {
-   let arrayArgTest = [1,2,3];
-   forEach(arrayArgTest, function(number, index, arr) {
+  },
+  'forEach: It should pass the array as the third argument to the callback': function() {
+    let arrayArgTest = [1,2,3];
+    forEach(arrayArgTest, function(number, index, arr) {
       eq(arrayArgTest, arr);
-   });
- },
- 'There should be a third argument which is the this object': function() {
-   forEach([1], function() {
+    });
+  },
+  'forEach: There should be a third argument which is the this object': function() {
+    forEach([1], function() {
      eq('I should be accessible outside of the callback', this.description)
-   }, {description: 'I should be accessible outside of the callback'
-  });
- }
+    }, {description: 'I should be accessible outside of the callback'
+    });
+  },
+  'filter: It should run the callback function array.length times': function() {
+     var counter = 0;
+     filter([1,2,3], function() {
+       counter++;
+     });
+     eq(3, counter)
+  },
+  'filter: It should pass in the ith element as the first argument to the callback': function() {
+     filter([1], function(number) {
+       eq(1, number)
+     });
+  },
+  'filter: It should pass in the ith index as the second argument to the callback': function() {
+    filter([1], function(number, index) {
+      eq(0, index)
+    });
+  },
+  'filter: It should pass the array as the third argument to the callback': function() {
+    let arrayArgTest = [1,2,3];
+    filter(arrayArgTest, function(number, index, arr) {
+      eq(arrayArgTest, arr);
+    });
+  },
+  'filter: There should be a third argument which is the this object': function() {
+    filter([1], function() {
+     eq('I should be accessible outside of the callback', this.description)
+    }, {description: 'I should be accessible outside of the callback'
+    });
+  },
+  'filter: Callback should return a filtered array': function() {
+    returned_arr = filter([1,2,3], function(e) { return e > 1 });
+    eq(true, returned_arr.every(function(e) { return e > 1 }));
+  },
 });
 </script>
