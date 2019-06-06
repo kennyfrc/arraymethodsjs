@@ -32,6 +32,23 @@ function filter(arr, callback, thisObject) {
   return modified_arr
 }
   
+  
+function map(arr, callback, thisObject) {
+  let fcnCallback = callback
+  let modified_arr = [];
+  
+  if (thisObject) {
+    fcnCallback = callback.bind(thisObject)
+  }
+  
+  for (let i = 0; i < arr.length; i++) {
+    modified_arr.push(fcnCallback(arr[i],i,arr));
+  };
+  
+  return modified_arr
+}
+  
+  
 tests({
   'forEach: It should run the callback function array.length times': function() {
      var counter = 0;
@@ -94,6 +111,39 @@ tests({
   'filter: Callback should return a filtered array': function() {
     returned_arr = filter([1,2,3], function(e) { return e > 1 });
     eq(true, returned_arr.every(function(e) { return e > 1 }));
+  },
+  'map: It should run the callback function array.length times': function() {
+     var counter = 0;
+     map([1,2,3], function() {
+       counter++;
+     });
+     eq(3, counter)
+  },
+  'map: It should pass in the ith element as the first argument to the callback': function() {
+     map([1], function(number) {
+       eq(1, number)
+     });
+  },
+  'map: It should pass in the ith index as the second argument to the callback': function() {
+    map([1], function(number, index) {
+      eq(0, index)
+    });
+  },
+  'map: It should pass the array as the third argument to the callback': function() {
+    let arrayArgTest = [1,2,3];
+    map(arrayArgTest, function(number, index, arr) {
+      eq(arrayArgTest, arr);
+    });
+  },
+  'map: There should be a third argument which is the this object': function() {
+    map([1], function() {
+     eq('I should be accessible outside of the callback', this.description)
+    }, {description: 'I should be accessible outside of the callback'
+    });
+  },
+  'map: Callback should return a modofied array based on the callback': function() {
+    returned_arr = map([1,2,3], function(e) { return e * 2 });
+    eq(true, returned_arr.every(function(e) { return e * 2 }));
   },
 });
 </script>
