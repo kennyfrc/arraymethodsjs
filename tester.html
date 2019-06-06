@@ -110,7 +110,7 @@ tests({
   },
   'filter: Callback should return a filtered array': function() {
     returned_arr = filter([1,2,3], function(e) { return e > 1 });
-    eq(true, returned_arr.every(function(e) { return e > 1 }));
+    eq(true, returned_arr.every(function(e,i) { return e === [2,3][i] }));
   },
   'map: It should run the callback function array.length times': function() {
      var counter = 0;
@@ -141,9 +141,9 @@ tests({
     }, {description: 'I should be accessible outside of the callback'
     });
   },
-  'map: Callback should return a modofied array based on the callback': function() {
+  'map: Callback should return a modified array based on the callback': function() {
     returned_arr = map([1,2,3], function(e) { return e * 2 });
-    eq(true, returned_arr.every(function(e) { return e * 2 }));
+    eq(true, returned_arr.every(function(e,i) { return e === [2,4,6][i] }));
   },
 });
 </script>
