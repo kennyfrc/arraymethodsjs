@@ -53,7 +53,24 @@ function map(arr, callback, thisObject) {
   
   return modified_arr
 }
+
+// needs some tests
+function reduce(arr, callback, initialValue) {
+  if (initialValue === undefined) {
+    var acc = 0;
+    var i = 1;
+  } else {
+    var acc = initialValue
+    var i = 0;
+  };
   
+  for (i; i < arr.length; i++) {
+    acc = callback(acc, arr[i], i, arr);
+  }
+      
+  return acc
+};
+
   
 tests({
   'forEach: It should run the callback function array.length times': function() {

@@ -1,3 +1,6 @@
 ## Array Methods JS
 
-* forEach: added tests for callbacks
+* forEach (done)
+* filter (done)
+* map (done)
+* reduce (ongoing, needs tests)
