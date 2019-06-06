@@ -39,10 +39,16 @@ function map(arr, callback, thisObject) {
   
   if (thisObject) {
     fcnCallback = callback.bind(thisObject)
+  } else {
+    fcnCallback = callback.bind(undefined)
   }
   
   for (let i = 0; i < arr.length; i++) {
-    modified_arr.push(fcnCallback(arr[i],i,arr));
+    if (arr[i] === undefined) {
+      modified_arr.push(undefined)
+    } else {
+      modified_arr.push(fcnCallback(arr[i],i,arr));
+    }
   };
   
   return modified_arr
@@ -145,5 +151,8 @@ tests({
     returned_arr = map([1,2,3], function(e) { return e * 2 });
     eq(true, returned_arr.every(function(e,i) { return e === [2,4,6][i] }));
   },
+  'map: If there is a hole in the array, pass undefined': function() {
+    eq(true, [undefined,4,6].every((e,i) => [,2,3].map ((e) => e * 2)));
+  }
 });
 </script>
