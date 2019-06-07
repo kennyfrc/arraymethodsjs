@@ -57,7 +57,7 @@ function map(arr, callback, thisObject) {
 // needs some tests
 function reduce(arr, callback, initialValue) {
   if (initialValue === undefined) {
-    var acc = 0;
+    var acc = arr[0];
     var i = 1;
   } else {
     var acc = initialValue
@@ -170,6 +170,15 @@ tests({
   },
   'map: If there is a hole in the array, pass undefined': function() {
     eq(true, [undefined,4,6].every((e,i) => [,2,3].map ((e) => e * 2)));
+  },
+  'reduce: if initialValue, then set it as the acc': function() {
+    let result = reduce([1,2,3], (acc, curr) => (acc + curr), 5)
+    eq(11, result)
+   },
+  'reduce: if initialValue doesnt exist, then set acc as the first item in the array': function() {
+    let result = reduce([1,2,3], (acc, curr) => (acc + curr))
+    eq(6, result)
   }
+
 });
 </script>
